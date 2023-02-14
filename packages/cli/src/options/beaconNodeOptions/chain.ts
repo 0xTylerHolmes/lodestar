@@ -1,14 +1,14 @@
 import {defaultOptions, IBeaconNodeOptions} from "@lodestar/beacon-node";
-import {ICliCommandOptions} from "../../util/index.js";
+import {CliCommandOptions} from "../../util/index.js";
 
-export interface IChainArgs {
+export type ChainArgs = {
   suggestedFeeRecipient: string;
   "chain.blsVerifyAllMultiThread": boolean;
   "chain.blsVerifyAllMainThread": boolean;
   "chain.disableBlsBatchVerify": boolean;
   "chain.persistInvalidSszObjects": boolean;
-  // No need to define chain.persistInvalidSszObjects as part of IChainArgs
-  // as this is defined as part of IBeaconPaths
+  // No need to define chain.persistInvalidSszObjects as part of ChainArgs
+  // as this is defined as part of BeaconPaths
   // "chain.persistInvalidSszObjectsDir": string;
   "chain.proposerBoostEnabled": boolean;
   "chain.disableImportExecutionFcU": boolean;
@@ -17,9 +17,9 @@ export interface IChainArgs {
   "chain.assertCorrectProgressiveBalances": boolean;
   "chain.maxSkipSlots": number;
   "safe-slots-to-import-optimistically": number;
-}
+};
 
-export function parseArgs(args: IChainArgs): IBeaconNodeOptions["chain"] {
+export function parseArgs(args: ChainArgs): IBeaconNodeOptions["chain"] {
   return {
     suggestedFeeRecipient: args["suggestedFeeRecipient"],
     blsVerifyAllMultiThread: args["chain.blsVerifyAllMultiThread"],
@@ -38,7 +38,7 @@ export function parseArgs(args: IChainArgs): IBeaconNodeOptions["chain"] {
   };
 }
 
-export const options: ICliCommandOptions<IChainArgs> = {
+export const options: CliCommandOptions<ChainArgs> = {
   suggestedFeeRecipient: {
     type: "string",
     description:

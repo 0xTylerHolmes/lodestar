@@ -2,10 +2,10 @@ import {routes, ServerApi} from "@lodestar/api";
 import {ProofType, Tree} from "@chainsafe/persistent-merkle-tree";
 import {ApiModules} from "../types.js";
 import {resolveStateId} from "../beacon/state/utils.js";
-import {IApiOptions} from "../../options.js";
+import {ApiOptions} from "../../options.js";
 
 export function getProofApi(
-  opts: IApiOptions,
+  opts: ApiOptions,
   {chain, config, db}: Pick<ApiModules, "chain" | "config" | "db">
 ): ServerApi<routes.proof.Api> {
   // It's currently possible to request gigantic proofs (eg: a proof of the entire beacon state)

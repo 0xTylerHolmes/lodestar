@@ -1,4 +1,4 @@
-import {ILogger} from "@lodestar/utils";
+import {Logger} from "@lodestar/utils";
 import {SLOTS_PER_EPOCH} from "@lodestar/params";
 import {Slot, Epoch} from "@lodestar/types";
 import {computeEpochAtSlot, computeStartSlotAtEpoch} from "@lodestar/state-transition";
@@ -25,7 +25,7 @@ export class StatesArchiver {
   constructor(
     private readonly checkpointStateCache: CheckpointStateCache,
     private readonly db: IBeaconDb,
-    private readonly logger: ILogger
+    private readonly logger: Logger
   ) {}
 
   /**

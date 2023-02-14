@@ -1,5 +1,5 @@
-import {computeEpochAtSlot, IAttesterStatus, parseAttesterFlags} from "@lodestar/state-transition";
-import {ILogger} from "@lodestar/utils";
+import {computeEpochAtSlot, AttesterStatus, parseAttesterFlags} from "@lodestar/state-transition";
+import {Logger} from "@lodestar/utils";
 import {allForks} from "@lodestar/types";
 import {IChainForkConfig} from "@lodestar/config";
 import {MIN_ATTESTATION_INCLUSION_DELAY, SLOTS_PER_EPOCH} from "@lodestar/params";
@@ -18,9 +18,9 @@ export enum OpSource {
   gossip = "gossip",
 }
 
-export interface IValidatorMonitor {
+export type ValidatorMonitor = {
   registerLocalValidator(index: number): void;
-  registerValidatorStatuses(currentEpoch: Epoch, statuses: IAttesterStatus[], balances?: number[]): void;
+  registerValidatorStatuses(currentEpoch: Epoch, statuses: AttesterStatus[], balances?: number[]): void;
   registerBeaconBlock(src: OpSource, seenTimestampSec: Seconds, block: allForks.BeaconBlock): void;
   registerImportedBlock(block: allForks.BeaconBlock, data: {proposerBalanceDelta: number}): void;
   submitUnaggregatedAttestation(
@@ -42,7 +42,7 @@ export interface IValidatorMonitor {
   ): void;
   registerAttestationInBlock(indexedAttestation: IndexedAttestation, parentSlot: Slot, correctHead: boolean): void;
   scrapeMetrics(slotClock: Slot): void;
-}
+};
 
 /** Information required to reward some validator during the current and previous epoch. */
 type ValidatorStatus = {
@@ -77,7 +77,7 @@ type ValidatorStatus = {
   inclusionDistance: number;
 };
 
-function statusToSummary(status: IAttesterStatus): ValidatorStatus {
+function statusToSummary(status: AttesterStatus): ValidatorStatus {
   const flags = parseAttesterFlags(status.flags);
   return {
     isSlashed: flags.unslashed,
@@ -166,8 +166,8 @@ export function createValidatorMonitor(
   metrics: ILodestarMetrics,
   config: IChainForkConfig,
   genesisTime: number,
-  logger: ILogger
-): IValidatorMonitor {
+  logger: Logger
+): ValidatorMonitor {
   /** The validators that require additional monitoring. */
   const validators = new Map<ValidatorIndex, MonitoredValidator>();
 
